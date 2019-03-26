@@ -1,3 +1,5 @@
+Aviation Analysis Using Apache Hive
+
 Taking an airplane is one of the most important and efficient ways to travel. However, many travelers have experienced delayed flight. Which airline carriers delayed most often? Which airports have highest probability to make you wait for a long time? Also, which day of week and which month of year are better for your journey without severe delay?
 
 The main purpose of the project is to explore the data sets by analyzing with different tools and technologies to give the solutions for different aviation problems.
