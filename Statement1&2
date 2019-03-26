@@ -1,0 +1,147 @@
+Now we need to create Aviation Table:
+
+
+CREATE TABLE aviation(
+id INT,
+Year INT,
+Month INT,
+DayofMonth INT,
+DayOfWeek INT,
+DepTime STRING,
+CRSDepTime STRING,
+ArrTime STRING,
+CRSArrTime STRING,
+UniqueCarrier STRING,
+FlightNum INT,
+TailNum STRING,
+ActualElapsedTime STRING,
+CRSElapsedTime STRING,
+AirTime INT,
+ArrDelay INT,
+DepDelay INT,
+Origin STRING,
+Dest STRING,
+Distance INT,
+TaxiIn INT,
+TaxiOut INT,
+Cancelled STRING,
+CancellationCode STRING,
+Diverted INT,
+CarrierDelay INT,
+WeatherDelay INT,
+NASDelay INT,
+SecurityDelay INT,
+LateAircraftDelay INT)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
+
+//LOADING DATA INTO HDFS
+
+hive> Load Data inpath '/tmp/DelayedFlights.csv' INTO Table aviation;
+Loading data to table mydb.aviation
+Table aviation stats: [numFiles=1, totalSize=247963212]
+OK
+Time taken: 0.498 seconds
+
+PROBLEM STATEMENT 1:
+
+Top 5 visited destination.
+
+hive> Select dest,count(dest) as VistedCount from aviation group by dest order by VistedCount desc limit 5;
+FAILED: ParseException line 1:78 missing BY at 'bt' near 'bt'
+line 1:81 missing EOF at 'VistedCount' near 'bt'
+hive> Select dest,count(dest) as VistedCount from mydb.aviation group by dest order by VistedCount desc limit 5;
+Query ID = cloudera_20180307183737_97bcf851-e9f1-46be-b9a8-43e1cff7937e
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1520302464832_0017, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1520302464832_0017/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1520302464832_0017
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2018-03-07 18:37:41,178 Stage-1 map = 0%,  reduce = 0%
+2018-03-07 18:37:50,975 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.68 sec
+2018-03-07 18:37:59,572 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.87 sec
+MapReduce Total cumulative CPU time: 4 seconds 870 msec
+Ended Job = job_1520302464832_0017
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1520302464832_0018, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1520302464832_0018/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1520302464832_0018
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2018-03-07 18:38:09,095 Stage-2 map = 0%,  reduce = 0%
+2018-03-07 18:38:16,716 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 0.96 sec
+2018-03-07 18:38:24,241 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.28 sec
+MapReduce Total cumulative CPU time: 2 seconds 280 msec
+Ended Job = job_1520302464832_0018
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 4.87 sec   HDFS Read: 247976151 HDFS Write: 7365 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.28 sec   HDFS Read: 12433 HDFS Write: 52 SUCCESS
+Total MapReduce CPU Time Spent: 7 seconds 150 msec
+OK
+ORD	108984
+ATL	106898
+DFW	70657
+DEN	63003
+LAX	59969
+Time taken: 52.54 seconds, Fetched: 5 row(s)
+
+
+PROBLEM STATEMENT 2:
+Which month have seen the most number of cancellation due to bad weather?
+
+hive> select month,count(*) as FlightsCancelled from aviation where Cancelled=1 AND CancellationCode='B' group by month order by FlightsCancelled desc limit 1;
+Query ID = cloudera_20180307182828_f964bfcb-d402-4f06-9c90-2aac9ede4fcb
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1520302464832_0012, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1520302464832_0012/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1520302464832_0012
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2018-03-07 18:28:29,412 Stage-1 map = 0%,  reduce = 0%
+2018-03-07 18:28:45,316 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.96 sec
+2018-03-07 18:28:55,259 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.24 sec
+MapReduce Total cumulative CPU time: 6 seconds 240 msec
+Ended Job = job_1520302464832_0012
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1520302464832_0013, Tracking URL = http://quickstart.cloudera:8088/proxy/application_1520302464832_0013/
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1520302464832_0013
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2018-03-07 18:29:05,457 Stage-2 map = 0%,  reduce = 0%
+2018-03-07 18:29:13,261 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 0.95 sec
+2018-03-07 18:29:23,360 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 2.44 sec
+MapReduce Total cumulative CPU time: 2 seconds 440 msec
+Ended Job = job_1520302464832_0013
+MapReduce Jobs Launched: 
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.24 sec   HDFS Read: 247977134 HDFS Write: 154 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 2.44 sec   HDFS Read: 5185 HDFS Write: 7 SUCCESS
+Total MapReduce CPU Time Spent: 8 seconds 680 msec
+OK
+12	250
+Time taken: 63.285 seconds, Fetched: 1 row(s)
+
+
+
