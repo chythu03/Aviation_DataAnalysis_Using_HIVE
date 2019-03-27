@@ -37,7 +37,7 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ',';
 //LOADING DATA INTO HDFS
 
 hive> Load Data inpath '/tmp/DelayedFlights.csv' INTO Table aviation;
-Loading data to table mydb.aviation
+Loading data to table aviation
 Table aviation stats: [numFiles=1, totalSize=247963212]
 OK
 Time taken: 0.498 seconds
@@ -46,7 +46,7 @@ PROBLEM STATEMENT 1:
 
 Top 5 visited destination.
 
-hive> Select dest,count(dest) as VistedCount from aviation group by dest order by VistedCount desc limit 5;
+hive> Select Dest,count(Dest) as VistedCount from aviation group by Dest order by VistedCount desc limit 5;
 FAILED: ParseException line 1:78 missing BY at 'bt' near 'bt'
 line 1:81 missing EOF at 'VistedCount' near 'bt'
 hive> Select dest,count(dest) as VistedCount from mydb.aviation group by dest order by VistedCount desc limit 5;
