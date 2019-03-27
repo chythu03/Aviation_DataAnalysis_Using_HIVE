@@ -49,7 +49,7 @@ Top 5 visited destination.
 hive> Select Dest,count(Dest) as VistedCount from aviation group by Dest order by VistedCount desc limit 5;
 FAILED: ParseException line 1:78 missing BY at 'bt' near 'bt'
 line 1:81 missing EOF at 'VistedCount' near 'bt'
-hive> Select dest,count(dest) as VistedCount from mydb.aviation group by dest order by VistedCount desc limit 5;
+hive> Select Dest,count(dest) as VistedCount from aviation group by Dest order by VistedCount desc limit 5;
 Query ID = cloudera_20180307183737_97bcf851-e9f1-46be-b9a8-43e1cff7937e
 Total jobs = 2
 Launching Job 1 out of 2
