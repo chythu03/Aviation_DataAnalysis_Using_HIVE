@@ -100,7 +100,7 @@ Time taken: 52.54 seconds, Fetched: 5 row(s)
 PROBLEM STATEMENT 2:
 Which month have seen the most number of cancellation due to bad weather?
 
-hive> select month,count(*) as FlightsCancelled from aviation where Cancelled=1 AND CancellationCode='B' group by month order by FlightsCancelled desc limit 1;
+hive> select month,count(cancelled) as FlightsCancelled from aviation where Cancelled=1 AND CancellationCode='B' group by month order by FlightsCancelled desc limit 1;
 Query ID = cloudera_20180307182828_f964bfcb-d402-4f06-9c90-2aac9ede4fcb
 Total jobs = 2
 Launching Job 1 out of 2
