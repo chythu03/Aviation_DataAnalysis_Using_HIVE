@@ -1,0 +1,15 @@
+CREATE TABLE input (line STRING);
+LOAD DATA LOCAL INPATH 'input.tsv' OVERWRITE INTO TABLE input;
+
+-- temporary table to hold words...
+CREATE TABLE words (word STRING);
+
+add file splitter.py;
+
+INSERT OVERWRITE TABLE words 
+  SELECT TRANSFORM(text) 
+    USING 'python splitter.py' 
+    AS word
+  FROM input;
+
+SELECT word, count(*) AS count FROM words GROUP BY word;
