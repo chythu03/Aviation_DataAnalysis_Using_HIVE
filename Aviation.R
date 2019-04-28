@@ -8,5 +8,3 @@ library(psych)
 describe(air.df)
 describe(air.df$ArrTime)
 describe(air.df[ , c(2, 4:9)])
-
-By 
